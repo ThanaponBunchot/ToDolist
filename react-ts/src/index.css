@@ -1,0 +1,128 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.container {
+  margin: 5rem auto;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 720px;
+
+  background-color: #f5f5f5;
+  border-radius: 20px;
+}
+.task-header {
+  padding-top: 30px;
+  width: 520px;
+  display: flex;
+  font-size: large;
+  font-weight: 500;
+  text-align: left;
+}
+.list {
+  display: flex;
+  background-color: #e07c7c;
+  justify-content: flex-start;
+}
+.list-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  background-color: #ffffff;
+  padding-top: 20px;
+  padding-left: 20px;
+  border-radius: 20px;
+  text-justify: center;
+  margin-top: 20px;
+  height: 20px;
+  width: 540px;
+  color: rgb(125, 125, 125);
+}
+.inside-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-right: 20px;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+.title{
+  padding-top: 10px;
+}
+.cancel {
+  cursor: pointer;
+}
+.edit-delete {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.drop-down {
+  position: relative;
+  width: 50px;
+  cursor: pointer;
+  border-width: 2px;
+ 
+}
+.drop-down-content {
+  position: absolute;
+  top:35px;
+  min-width: 80px;
+  font-size: small;
+  right: 0px;
+  background-color: #f5f5f5;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  z-index: 1;
+  border-radius: 10px;
+  transition: 2.5;
+}
+.editInput {
+  position: absolute;
+  top: -57.5px;
+  height: 0px;
+  left: -450px;
+}
+.button {
+  color: #e07c7c;
+}
+.dot {
+  font-size: x-large;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.inputText {
+  margin-top: 20px;
+  justify-content: center;
+  border-radius: 20px;
+  background-color: #ffffff;
+}
+.progrees-bar {
+  width: 518px;
+  height: 123px;
+  background: #e07c7c;
+  border-radius: 20px;
+  padding: 20px;
+  position: flex;
+  margin-top: 20px;
+}
+.edit-text{
+  position: relative;
+}
+.saveButton{
+  position: absolute;
+  top: -53px;
+  right: -30px;
+  color: white;
+  background-color: #585292;
+  border-radius: 30px;
+  padding: 5px 10px 10px 15px;
+  font-size: small;
+}

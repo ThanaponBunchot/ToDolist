@@ -3,7 +3,11 @@ import { ToDoListProps } from "./interfaces/listProp";
 import axios from "axios";
 import { InputText } from "./component/Input";
 import { EditInput } from "./component/EditInput";
+import { CheckBox } from "./component/CheckBox";
+import { AiOutlineCheck } from "react-icons/ai";
+import { RiArrowDropDownLine} from "react-icons/ri";
 import "./App.css";
+
 
 const App = () => {
   const [lists, setLists] = useState<ToDoListProps["ToDoList"]>([]);
@@ -17,6 +21,9 @@ const App = () => {
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
   const [updateTitle, setUpdateTitle] = useState("");
+  const [checked, setChecked] = useState(false);
+  const [radioState, setRadioState] = useState("off");
+  const [dropDown,setDropDown]=useState(false)
 
   const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -42,34 +49,55 @@ const App = () => {
     setUpdateTitle(_titleUpdate);
     setUpdateData(_updateData);
   };
-  // console.log("list[0].title>>", lists[0]?.title);
+
   const handleNoInput = (title: string) => {
     const _updateData = { ...updateId, title: title };
     const _titleUpdate = _updateData.title;
     setUpdateTitle(_titleUpdate);
   };
-  // Fetching
-  useEffect(() => {
-    let data = "";
+
+  const handleChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("radio on change... ");
+    event.preventDefault();
+    const _radio = event.target.value;
+    setRadioState(event.target.value);
+
+    console.log("event.target.value>>", _radio);
+    console.log("radioState>>>", radioState);
+  };
+
+  const markDone = (listId: string) => {
+    const findMarkId = lists.filter((r) => r.id === listId);
+    console.log("findMarkId>>", findMarkId);
+    const setDone = { ...findMarkId[0], completed: true };
+    console.log("setDone", setDone);
+
+    let data = JSON.stringify({
+      title: setDone.title,
+      completed: setDone.completed,
+    });
+
     let config = {
-      method: "get",
+      method: "put",
       maxBodyLength: Infinity,
-      url: "http://localhost:3001/todos",
-      headers: {},
+      url: `http://localhost:3001/todos/${listId}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
       data: data,
     };
+
     axios
       .request(config)
-      .then((response: any) => {
-        // console.log("res.data=>>", response.data);
-        setLists(response.data);
+      .then((response) => {
+        console.log("mark done>>", response.data);
       })
-      .catch((error: any) => {
-        console.log("error>>", error);
+      .catch((error) => {
+        console.log(error);
       });
-  }, [clickedButton, fetchToggle]);
-  // console.log(text);
-  // console.log("clickButton>>", clickedButton);
+    setFetchToggle(!fetchToggle);
+    console.log("Mark done completed!");
+  };
 
   //Create
   const createList = (text: string) => {
@@ -160,27 +188,173 @@ const App = () => {
     console.log("Update completed");
   };
 
+  //Click All
+  const clickAll = () =>{
+      let data = "";
+      let config = {
+        method: "get",
+        maxBodyLength: Infinity,
+        url: "http://localhost:3001/todos",
+        headers: {},
+        data: data,
+      };
+      axios
+        .request(config)
+        .then((response: any) => {
+          // console.log("res.data=>>", response.data);
+          setLists(response.data);
+          setFetchToggle(!fetchToggle)
+        })
+        .catch((error: any) => {
+          console.log("error>>", error);
+        });
+  }
+
+  //Click Done
+  const clickDone = ()=>{
+ 
+    let data = "";
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "http://localhost:3001/todos",
+      headers: {},
+      data: data,
+    };
+    axios
+      .request(config)
+      .then((response: any) => {
+        console.log("res.data=>>", response.data);
+        const fetchData = response.data
+        const doneList = fetchData.filter((list: { completed: boolean; })=>list.completed === true)
+        setLists(doneList)
+      })
+      
+      .catch((error: any) => {
+        console.log("error>>", error);
+      });
+  }
+
+  //Click Undone
+  const clickUndone = ()=>{
+    let data = "";
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "http://localhost:3001/todos",
+      headers: {},
+      data: data,
+    };
+    axios
+      .request(config)
+      .then((response: any) => {
+        console.log("res.data=>>", response.data);
+        const fetchData = response.data
+        const unDoneList = fetchData.filter((list: { completed: boolean; })=>list.completed === false)
+        setLists(unDoneList)
+      })
+      
+      .catch((error: any) => {
+        console.log("error>>", error);
+      });
+  }
+
+  // Fecthing Radio
+  useEffect(() => {
+    const _isSame = radioState === "on" ? true : false;
+    console.log("_isSame>>", _isSame);
+    console.log("checked>>", checked);
+    console.log("radioState>>>", radioState);
+    setChecked(_isSame);
+  }, [radioState]);
+
+  // Fetching
+  useEffect(() => {
+    let data = "";
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "http://localhost:3001/todos",
+      headers: {},
+      data: data,
+    };
+    axios
+      .request(config)
+      .then((response: any) => {
+        // console.log("res.data=>>", response.data);
+        setLists(response.data);
+      })
+      .catch((error: any) => {
+        console.log("error>>", error);
+      });
+  }, [clickedButton, fetchToggle]);
+
   useEffect(() => {}, []);
 
   return (
     <div className="container">
       <div className="progrees-bar">Progress bar</div>
-      <div className="task-header">Tasks</div>
+      <div className="drop-down-filter">
+        {" "}
+        <div className="task-header">Tasks</div>
+        <div className="drop-down-filter-content">
+          <div className="selector">
+            <div>All</div> <div className="downLine" onClick={()=>setDropDown(!dropDown)}><RiArrowDropDownLine/></div>
+          </div>
+        </div>
+      </div>
+      {dropDown && (   <div className="optionAll">
+        <div className="option1" onClick={()=>{setDropDown(!dropDown);clickAll()}}>All</div>
+        <div className="option2" onClick={()=>{setDropDown(!dropDown);clickDone()}}>Done</div>
+        <div className="option3" onClick={()=>{setDropDown(!dropDown);clickUndone()}}>Undone</div>
+      </div>)}
+   
+
       <div className="lists">
         {lists.map((lists) => (
           <div className="list-items">
             <div className="inside-list">
-              <div className="title"> {lists.title}</div>
+              <div className="title">
+                <div
+                  className="checkBox"
+                  onClick={() => {
+                    setId(lists.id);
+                    markDone(lists.id);
+                  }}
+                >
+                  <CheckBox
+                    handleOnChange={handleChangeRadio}
+                    type="radio"
+                    checked={lists.completed}
+                    styles={{
+                      height: "25px",
+                      width: "25px",
+                      outline: "none",
+                      display: "inline-block",
+                    }}
+                  />
+                </div>{" "}
+                {lists.completed === true ? (
+                  <div className="checkIcon">
+                    <AiOutlineCheck />
+                  </div>
+                ) : (
+                  ""
+                )}
+                {lists.completed === true ? (
+                  <span className="lineThroughText">{lists.title}</span>
+                ) : (
+                  <span>{lists.title}</span>
+                )}
+              </div>
               <div className="drop-down">
                 <div
-                
                   className="dot"
                   onClick={() => {
                     setIsOpenEdit(!isOpenEdit);
                     // setUpdateToggle(!updateToggle);
                     updateFunc(lists.id);
                   }}
-                 
                 >
                   ...
                 </div>

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { ToDoListProps } from "./interfaces/listProp";
-import axios from "axios";
+import axios, { all } from "axios";
 import { InputText } from "./component/Input";
 import { EditInput } from "./component/EditInput";
 import { CheckBox } from "./component/CheckBox";
+import { ProgressBar } from "./component/ProgessBar";
+import { ProgressBarBack } from "./component/ProgressBarBack";
 import { AiOutlineCheck } from "react-icons/ai";
-import { RiArrowDropDownLine} from "react-icons/ri";
+import { RiArrowDropDownLine } from "react-icons/ri";
 import "./App.css";
-
 
 const App = () => {
   const [lists, setLists] = useState<ToDoListProps["ToDoList"]>([]);
@@ -23,7 +24,12 @@ const App = () => {
   const [updateTitle, setUpdateTitle] = useState("");
   const [checked, setChecked] = useState(false);
   const [radioState, setRadioState] = useState("off");
-  const [dropDown,setDropDown]=useState(false)
+  const [dropDown, setDropDown] = useState(false);
+  const [doneTasks, setDonetasks] = useState(0);
+  const [widthTask, setWidthTask] = useState(0);
+  const [dropDownStatus, setDropDownStatus] = useState("All");
+  const [opacity, setOpacity] = useState("1");
+  const [margin, setMargin] = useState("0px");
 
   const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -189,87 +195,7 @@ const App = () => {
   };
 
   //Click All
-  const clickAll = () =>{
-      let data = "";
-      let config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: "http://localhost:3001/todos",
-        headers: {},
-        data: data,
-      };
-      axios
-        .request(config)
-        .then((response: any) => {
-          // console.log("res.data=>>", response.data);
-          setLists(response.data);
-          setFetchToggle(!fetchToggle)
-        })
-        .catch((error: any) => {
-          console.log("error>>", error);
-        });
-  }
-
-  //Click Done
-  const clickDone = ()=>{
- 
-    let data = "";
-    let config = {
-      method: "get",
-      maxBodyLength: Infinity,
-      url: "http://localhost:3001/todos",
-      headers: {},
-      data: data,
-    };
-    axios
-      .request(config)
-      .then((response: any) => {
-        console.log("res.data=>>", response.data);
-        const fetchData = response.data
-        const doneList = fetchData.filter((list: { completed: boolean; })=>list.completed === true)
-        setLists(doneList)
-      })
-      
-      .catch((error: any) => {
-        console.log("error>>", error);
-      });
-  }
-
-  //Click Undone
-  const clickUndone = ()=>{
-    let data = "";
-    let config = {
-      method: "get",
-      maxBodyLength: Infinity,
-      url: "http://localhost:3001/todos",
-      headers: {},
-      data: data,
-    };
-    axios
-      .request(config)
-      .then((response: any) => {
-        console.log("res.data=>>", response.data);
-        const fetchData = response.data
-        const unDoneList = fetchData.filter((list: { completed: boolean; })=>list.completed === false)
-        setLists(unDoneList)
-      })
-      
-      .catch((error: any) => {
-        console.log("error>>", error);
-      });
-  }
-
-  // Fecthing Radio
-  useEffect(() => {
-    const _isSame = radioState === "on" ? true : false;
-    console.log("_isSame>>", _isSame);
-    console.log("checked>>", checked);
-    console.log("radioState>>>", radioState);
-    setChecked(_isSame);
-  }, [radioState]);
-
-  // Fetching
-  useEffect(() => {
+  const clickAll = () => {
     let data = "";
     let config = {
       method: "get",
@@ -283,34 +209,218 @@ const App = () => {
       .then((response: any) => {
         // console.log("res.data=>>", response.data);
         setLists(response.data);
+        setFetchToggle(!fetchToggle);
+      })
+      .catch((error: any) => {
+        console.log("error>>", error);
+      });
+  };
+
+  //Click Done
+  const clickDone = () => {
+    let data = "";
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "http://localhost:3001/todos",
+      headers: {},
+      data: data,
+    };
+    setOpacity("0");
+    axios
+      .request(config)
+      .then((response: any) => {
+        console.log("res.data=>>", response.data);
+        const fetchData = response.data;
+        const doneList = fetchData.filter(
+          (list: { completed: boolean }) => list.completed === true
+        );
+        setLists(doneList);
+        setOpacity("1");
+      })
+
+      .catch((error: any) => {
+        console.log("error>>", error);
+      });
+  };
+
+  //Click Undone
+  const clickUndone = () => {
+    let data = "";
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "http://localhost:3001/todos",
+      headers: {},
+      data: data,
+    };
+    setOpacity("0");
+    axios
+      .request(config)
+      .then((response: any) => {
+        console.log("res.data=>>", response.data);
+        const fetchData = response.data;
+        const unDoneList = fetchData.filter(
+          (list: { completed: boolean }) => list.completed === false
+        );
+        setLists(unDoneList);
+        setOpacity("1");
+      })
+
+      .catch((error: any) => {
+        console.log("error>>", error);
+      });
+  };
+
+  // Fecthing Radio
+  useEffect(() => {
+    const _isSame = radioState === "on" ? true : false;
+    console.log("_isSame>>", _isSame);
+    console.log("checked>>", checked);
+    console.log("radioState>>>", radioState);
+    setChecked(_isSame);
+  }, [radioState]);
+
+  // Fetching when click
+  useEffect(() => {
+    let data = "";
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "http://localhost:3001/todos",
+      headers: {},
+      data: data,
+    };
+    setOpacity("0");
+    axios
+      .request(config)
+      .then((response: any) => {
+        // console.log("res.data=>>", response.data);
+        setLists(response.data);
+        setOpacity("1");
       })
       .catch((error: any) => {
         console.log("error>>", error);
       });
   }, [clickedButton, fetchToggle]);
 
-  useEffect(() => {}, []);
+  // Fecthing ProgressBar
+  useEffect(() => {
+    let data = "";
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "http://localhost:3001/todos",
+      headers: {},
+      data: data,
+    };
+    axios
+      .request(config)
+      .then((response: any) => {
+        // console.log("res.data=>>", response.data);
+        const allList = response.data;
+        const _doneTasks = allList.filter(
+          (list: { completed: boolean }) => list.completed === true
+        ).length;
+        const allTasks = allList.length;
+        const donePercent = ((_doneTasks / allTasks) * 100).toFixed(2);
+        const widthTask = Number(donePercent) * 450 * 0.01;
+        setDonetasks(_doneTasks);
+        setWidthTask(widthTask);
+        // setLists(response.data);
+      })
+      .catch((error: any) => {
+        console.log("error>>", error);
+      });
+
+    // console.log("lists>>>.", lists);
+  }, [fetchToggle, []]);
 
   return (
     <div className="container">
-      <div className="progrees-bar">Progress bar</div>
+      <div className="progrees-bar">
+        Progress
+        <div className="bar-container">
+          <div className="barStatus">
+            <ProgressBar
+              styles={{
+                height: "7px",
+                width: `${widthTask}px`,
+                backgroundColor: "white",
+                borderRadius: "5px",
+                transitionDuration: "2s",
+              }}
+            />
+          </div>
+          <div className="barBack">
+            <ProgressBarBack
+              styles={{
+                height: "7px",
+                width: "450px",
+                backgroundColor: "black",
+                borderRadius: "5px",
+              }}
+            />
+          </div>
+        </div>
+        <div className="completed-status">{doneTasks} completed</div>
+      </div>
+
       <div className="drop-down-filter">
         {" "}
         <div className="task-header">Tasks</div>
         <div className="drop-down-filter-content">
-          <div className="selector">
-            <div>All</div> <div className="downLine" onClick={()=>setDropDown(!dropDown)}><RiArrowDropDownLine/></div>
+          <div className="">{dropDownStatus}</div>{" "}
+          <div
+            className="downLine"
+            onClick={() => {
+              setDropDown(!dropDown);
+            }}
+          >
+            <RiArrowDropDownLine />
           </div>
         </div>
       </div>
-      {dropDown && (   <div className="optionAll">
-        <div className="option1" onClick={()=>{setDropDown(!dropDown);clickAll()}}>All</div>
-        <div className="option2" onClick={()=>{setDropDown(!dropDown);clickDone()}}>Done</div>
-        <div className="option3" onClick={()=>{setDropDown(!dropDown);clickUndone()}}>Undone</div>
-      </div>)}
-   
+      <div className="selector"></div>
+      {dropDown && (
+        <div className="optionAll" style={{ opacity: "1", marginTop: "2px" }}>
+          <div
+            className="option1"
+            onClick={() => {
+              setDropDown(!dropDown);
+              clickAll();
+              setDropDownStatus("All");
+            }}
+          >
+            All
+          </div>
+          <div
+            className="option2"
+            onClick={() => {
+              setDropDown(!dropDown);
+              clickDone();
+              setDropDownStatus("Done");
+            }}
+          >
+            Done
+          </div>
+          <div
+            className="option3"
+            onClick={() => {
+              setDropDown(!dropDown);
+              clickUndone();
+              setDropDownStatus("Undone");
+            }}
+          >
+            Undone
+          </div>
+        </div>
+      )}
 
-      <div className="lists">
+      <div
+        className="lists"
+        style={{ opacity: opacity, transitionDuration: "1s" }}
+      >
         {lists.map((lists) => (
           <div className="list-items">
             <div className="inside-list">
@@ -331,6 +441,7 @@ const App = () => {
                       width: "25px",
                       outline: "none",
                       display: "inline-block",
+                      transitionDuration: "0.5s",
                     }}
                   />
                 </div>{" "}
@@ -362,6 +473,7 @@ const App = () => {
                   <div className="drop-down-content">
                     <div className="edit-delete">
                       <div
+                        className="edit"
                         onClick={() => {
                           {
                             setUpdateToggle(true);
@@ -372,8 +484,14 @@ const App = () => {
                       >
                         Edit
                       </div>
-                      <div className="button" onClick={() => Delete(lists.id)}>
-                        Delete
+                      <div
+                        className="button"
+                        onClick={() => {
+                          Delete(lists.id);
+                          setIsOpenEdit(false);
+                        }}
+                      >
+                        <span className="delete">Delete</span>
                       </div>
                     </div>
                   </div>
@@ -430,7 +548,7 @@ const App = () => {
 
       <form>
         <button onClick={buttonHandler} className="button" name={text}>
-          Add list
+          <div className="add-button">Add</div>
         </button>
       </form>
     </div>

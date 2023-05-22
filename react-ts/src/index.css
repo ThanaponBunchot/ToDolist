@@ -4,6 +4,7 @@
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 }
+
 .container {
   margin: 5rem auto;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 2);
@@ -18,9 +19,9 @@
 }
 .task-header {
   padding-top: 30px;
-  width: 38rem;
+  width: 26rem;
   display: flex;
-  font-size: large;
+  font-size: 22px;
   font-weight: 500;
   margin-left: 80px;
   /* text-align: left; */
@@ -53,20 +54,19 @@
   padding-top: 10px;
   margin-top: 10px;
 }
-.title{
+.title {
   padding-top: 10px;
   display: flex;
   flex-direction: row;
 }
-.checkIcon{
+.checkIcon {
   z-index: 20;
   position: absolute;
   color: #ffffff;
   margin-top: 5px;
   margin-left: 4px;
-
 }
-.checkBox{
+.checkBox {
   z-index: 10;
   /* padding-bottom: 25px; */
   /* padding-right: 40px; */
@@ -74,10 +74,9 @@
   cursor: pointer;
   margin-right: 20px;
   /* background-color: #877549; */
- 
 }
-.lineThroughText{
-  text-decoration-line: line-through; 
+.lineThroughText {
+  text-decoration-line: line-through;
 }
 .cancel {
   cursor: pointer;
@@ -93,11 +92,10 @@
   width: 50px;
   cursor: pointer;
   border-width: 2px;
- 
 }
 .drop-down-content {
   position: absolute;
-  top:35px;
+  top: 35px;
   min-width: 80px;
   font-size: small;
   right: 0px;
@@ -128,6 +126,7 @@
   justify-content: center;
   border-radius: 20px;
   background-color: #ffffff;
+  margin-bottom: 20px;
 }
 .progrees-bar {
   width: 518px;
@@ -137,12 +136,15 @@
   padding: 20px;
   position: flex;
   margin-top: 20px;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 500;
 }
-.edit-text{
+.edit-text {
   z-index: 30px;
   position: relative;
 }
-.saveButton{
+.saveButton {
   position: absolute;
   top: -53px;
   right: -30px;
@@ -152,118 +154,147 @@
   padding: 5px 10px 10px 15px;
   font-size: small;
   z-index: 20;
+  text-indent: -5px;
 }
 
-input[type='radio'] {
-  /* padding: 0.5em; */
+input[type="radio"] {
   -webkit-appearance: none;
-  /* outline: 0.1em solid black; */
-  /* outline-offset: 0.1em; */
   background-color: #ffffff;
   border: 2px solid #585292;
   border-radius: 5px;
 }
-input[type=radio]:checked {
-  /* display: inline-block; */
-  /* size: 2px; */
+input[type="radio"]:checked {
   background-color: #585292;
 }
 
-.drop-down-filter{
+.drop-down-filter {
+  position: relative;
   display: flex;
   flex-direction: row;
-  background-color: #f5f5f5;
+}
 
+@media screen {
+  .drop-down-filter-content {
+    display: flex;
+    width: 6.5rem;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #ffffff;
+    margin-top: 30px;
+    height: 30px;
+    padding: 10px 20px 10px 10px;
+    text-justify: center;
+    text-align: left;
+    border-radius: 10px;
+    font-size: small;
+    margin-right: 75px;
+    z-index: 20;
+  }
 }
-.drop-down-filter-content{
-  /* position: absolute; */
-  display: flex;
-  position: absolute;
-  left: 55rem;
-  width: 6.5rem;
-  flex-direction: column;
-  background-color: #ffffff;
-  margin-top: 20px;
-  padding: 10px 20px 10px 10px;
-  text-justify: center;
-  text-align: left;
-  border-radius: 10px;
-  font-size: small;
-  margin-right: 80px;
-  z-index: 20;
-}
-.selector{
+
+.selector {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-.optionAll{
+.optionAll {
   position: absolute;
   display: flex;
   flex-direction: column;
   left: 10px;
-  top: 35% ;
+  top: 35%;
   left: 61%;
-  /* margin-top: 50px; */
   background-color: #ffffff;
   font-size: small;
   padding: 10px 10px 10px 10px;
   width: 105px;
-  z-index: 20;
+  z-index: 30;
   border-radius: 10px;
   cursor: pointer;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
-.optionAll:hover{
- 
+.option1 {
+  padding-left: 5px;
+  background-color: #ffffff;
+  text-align: left;
+}
+.option1:hover {
+  background-color: #585292;
+  color: #ffffff;
+  border-radius: 10px;
+  text-indent: 5px;
+  padding: 5px 0px 5px 0px;
+}
+.option2 {
+  background-color: #ffffff;
+  text-indent: 5px;
+}
+.option2:hover {
+  background-color: #585292;
+  color: #ffffff;
+  border-radius: 10px;
+  text-indent: 5px;
+  padding: 5px 0px 5px 0px;
+}
+.option3 {
+  background-color: #ffffff;
+  text-indent: 5px;
+}
+.option3:hover {
+  background-color: #585292;
+  color: #ffffff;
+  border-radius: 10px;
+  text-indent: 5px;
+  padding: 5px 0px 5px 0px;
+}
+.head-drop-down {
   /* background-color: #e07c7c; */
 }
-.option1{
-  padding-left: 5px;
-  /* border: 2px solid red; */
-  background-color: #ffffff;
-  /* padding: 2px 2px 2px 0px; */
-  /* border-radius: 10px; */
-  text-align: left;
-  /* justify-content: center; */
-  /* text-align: center; */
-}
-.option1:hover{
-  background-color: #585292;
-  color: #ffffff;
-  border-radius: 10px;
-  text-indent: 5px;
-  padding: 5px 0px 5px 0px;
-}
-.option2{
-  /* margin: 5px; */
-  /* border: 2px solid red; */
-  background-color: #ffffff;
-  /* border-radius: 10px; */
-  text-indent: 5px;
-}
-.option2:hover{
-  background-color: #585292;
-  color: #ffffff;
-  border-radius: 10px;
-  text-indent: 5px;
-  padding: 5px 0px 5px 0px;
-}
-.option3{
-  /* margin: 5px; */
-  /* border: 2px solid red; */
-  background-color: #ffffff;
-  /* border-radius: 10px; */
-  text-indent: 5px;
-}
-.option3:hover{
-  background-color: #585292;
-  color: #ffffff;
-  border-radius: 10px;
-  text-indent: 5px;
-  padding: 5px 0px 5px 0px;
-}
-.downLine{
-  font-size:large;
+.downLine {
+  font-size: large;
   cursor: pointer;
+}
+.completed-status {
+  font-size: small;
+  margin-top: 15px;
+  color: #ebb9b8;
+}
+.bar-container {
+  position: relative;
+  margin-top: 20px;
+  height: 7px;
+}
+.barBack {
+  position: absolute;
+}
+.barStatus {
+  position: absolute;
+  z-index: 20;
+}
+.add-button {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+  margin-left: 230px;
+  margin-top: -70px;
+  margin-bottom: 10px;
+  border: #ffffff;
+  color: rgb(255, 255, 255);
+  background-color: #585292;
+  padding-top: 7px;
+  cursor: pointer;
+}
+.add-button:hover {
+  background-color: #9e9ac2;
+}
+.edit:hover {
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 0px 2px 0px 2px;
+}
+.delete:hover {
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 0px 10px 0px 10px;
 }
